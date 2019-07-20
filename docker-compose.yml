@@ -2,12 +2,14 @@ version: "3.2"
 services:
   php:
     build: './php/'
+    container_name: sina_php
     networks:
       - backend
     volumes:
       - ./public_html/:/var/www/html/
   apache:
     build: './apache/'
+    container_name: sina_apache
     depends_on:
       - php
       - mysql
@@ -20,6 +22,7 @@ services:
       - ./public_html/:/var/www/html/
   mysql:
     image: mysql:5.7
+    container_name: sina_mysql
     networks:
       - backend
     environment:
@@ -29,6 +32,23 @@ services:
       - MYSQL_ROOT_PASSWORD=rootpassword
     volumes:
       - ./db:/var/lib/mysql
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: sina_phpmyadmin
+    networks:
+      - backend    
+    depends_on:
+      - mysql
+    environment:
+     # - PMA_ARBITRARY=1 # Descomentar esto y comentar el resto para conectar a otros servidores
+     - PMA_USER=root
+     - PMA_PASSWORD=rootpassword
+     - PMA_HOST=mysql
+    restart: always
+    ports:
+     - 9090:80
+    volumes:
+     - /sessions      
 networks:
   frontend:
   backend:
