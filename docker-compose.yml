@@ -17,11 +17,13 @@ services:
       - frontend
       - backend
     ports:
-      - "8080:80"
+      - "80:80" # Debe ser 80 para poder añadir una entrada en localhost que apunte a www.asociacionsina.org
     volumes:
       - ./public_html/:/var/www/html/
   mysql:
     image: mysql:5.7
+    # OJO: Esto habrá que cambiarlo para hacer un build y poner la configuración de mysql correcta
+    # build: './mysql/'
     container_name: sina_mysql
     networks:
       - backend

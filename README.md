@@ -20,6 +20,8 @@ Para poder montar una copia del blog de Sina debes seguir los siguientes pasos:
   - Carga la copia de la base de datos mediante la utilidad de importación de phpmyadmin
 5. Accede al blog en la dirección http://localhost:8080
 
+TO-DO: cambiar el host de Wordpress
+
 ## Parada
 
 Cuando hayas terminado ejecuta el comando `docker-compose down`. Los cambios que hayas hecho tanto en la base de datos como en los ficheros del blog se conservarán en tu copia local.
@@ -31,4 +33,26 @@ Si quieres volver al estado original del blog, borra **el contenido** de los dir
 ## Limpieza
 
 TODO: Explicar como eliminar todas las imágenes, contenedores y volúmenes de docker
+
+
+## Solución de problemas
+
+define('WP_DEBUG', true);
+
+TO-DO: Explicar cómo cambiar la configuración de mysql
+
+
+Ver la versión de Wordpress en BD: tabla wp_options, registro db_version
+https://codex.wordpress.org/WordPress_Versions
+
+
+Ver la versión de Wordpress en ficheros:
+In the wp-includes directory, open the version.php 
+
+
+Deshabilitar todos los plugins:
+Browse the table wp_options and find the option active_plugins. Delete the entry
+
+
+
 
