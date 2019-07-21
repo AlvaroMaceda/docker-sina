@@ -21,16 +21,13 @@ services:
     volumes:
       - ./public_html/:/var/www/html/
   mysql:
-    image: mysql:5.7
-    # OJO: Esto habrá que cambiarlo para hacer un build y poner la configuración de mysql correcta
-    # build: './mysql/'
+    build: './mysql/'
     container_name: sina_mysql
     networks:
-      - backend
+      backend:
+        aliases:
+         - db5000048318.hosting-data.io # Cambiar esto por el host que haya para mysql en wp-config.php
     environment:
-      #- MYSQL_DATABASE=db
-      #- MYSQL_USER=user
-      #- MYSQL_PASSWORD=password
       - MYSQL_ROOT_PASSWORD=rootpassword
     volumes:
       - ./db:/var/lib/mysql
