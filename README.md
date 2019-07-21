@@ -39,12 +39,19 @@ TODO: Explicar como eliminar todas las imágenes, contenedores y volúmenes de d
 
 TO-DO: Explicar cómo cambiar la configuración de mysql
 
+Ver los modulos instalados en apache: httpd -M
+
 Si tienes algún problema con los servidores, puedes ejecutar `docker-compose up` sin la opción `-d` y verás todos los mensajes de error. También puedes modificar wp-config.php y poner `define('WP_DEBUG', true);` 
 
 ### Conexión a mysql
 Puedes conectar a mysql desde línea de comandos ejecutando:
 `docker run -it --network sina_backend --rm mysql mysql -hsina_mysql -uroot -prootpassword`
 Desde ahí podrás ejecutar consultas directamente a la base de datos. Ten en cuenta que tambióen 
+
+### Conexión a Wordpress
+Si no encuentras la dirección http://www.asociacionsina.org/wp-admin seguramente sea porque está activado el plugin better-wp-security.
+
+Para acceder debes cambiar el nombre del directorio wp-content/plugins/better-wp-security a better-wp-security-disabled, tras lo cual ya podrás acceder. Renombra el directorio a su nombre original y activalo de nuevo.
 
 ### Versión de Wordpress
 Hay dos versiones de Wordpress: la de la base de datos y la de los ficheros. En principio deberían ser compatibles, pero puedes consultarlo de la siguiente forma:
