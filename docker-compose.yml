@@ -33,8 +33,9 @@ services:
     volumes:
       - ./db:/var/lib/mysql
 
+
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin
+    build: './phpmyadmin/'
     container_name: sina_phpmyadmin
     networks:
       - sina    

@@ -1,3 +1,4 @@
+
 # Blog de Sina
 
 El objetivo de este repositorio es tener un entorno de desarrollo para poder realizar modificaciones y pruebas con el blog de Sina.
@@ -16,7 +17,7 @@ Para poder montar una copia del blog de Sina debes seguir los siguientes pasos:
 3. Lanza los contenedores docker necesarios 
   - Desde el directorio actual ejecuta el comando `docker-compose up -d` en este directorio. La primera vez tardará unos minutos ya que debe descargar y construir los contenedores necesarios, las siguientes veces será bastante más rápido
 4. Accede a phpmyadmin en la dirección http://localhost:9090 y realiza lo siguiente:
-  - Crea el usuario y la base de datos para el blog. Los datos los tienes en vp-config.php
+  - Crea el usuario y la base de datos para el blog. Los datos los tienes en wp-config.php
   - Carga la copia de la base de datos mediante la utilidad de importación de phpmyadmin
 5. Modifica tu fichero de hosts (/etc/hosts si estás en linux) para incluir www.asociacionsina.org con la dirección 127.0.0.1. De este modo no tendrás que tocar nada en Wordpress. Recuerda eliminarlo cuando quieras acceder al blog real.
 6. Accede al blog en la dirección http://www.asociacionsina.org
@@ -27,26 +28,50 @@ Cuando hayas terminado ejecuta el comando `docker-compose down` en este director
 
 ## Empezar de nuevo
 
-Si quieres volver al estado original del blog, borra **el contenido** de los directorios /wordpress y /db y realiza de nuevo la instalación desde el paso 2.
+Si quieres volver al estado original del blog, borra **el contenido** de los directorios /wordpress y /db, ejecuta el comando `docker-compose rm` y realiza de nuevo la instalación desde el paso 2.
 
 ## Limpieza
 
-Puedes realizar una limpieza de los ficheros de docker 
-TODO: Explicar como eliminar todas las imágenes, contenedores y volúmenes de docker
+Puedes realizar una limpieza de los ficheros de docker ejecutando la serie de comandos:
+  - `docker-compose rm`
+  - `docker image rm docker-sina_php docker-sina_mysql docker-sina_apache bitnami/phpmyadmin` *
+  - `docker volume prune`
 
+* Puede que el borrado de bitnami/phpadmin de error si estás usando la imagen en otro contenedor. También puedes borrar todas las imágenes de tu sistema que no se estén usando con `docker image prune --all`
 
 ## Solución de problemas
 
-TO-DO: Explicar cómo cambiar la configuración de mysql
-
-Ver los modulos instalados en apache: httpd -M
+Puedes añadir configuración adicional para php de varias formas:
+- Añadiendo ficheros .ini en el directorio /php, destruyendo los contenedores (`docker-compose rm`) y volviendo a arrancar 
+- Modificando .htaccess del directorio /wordpress y añadiendo las opciones que quieras, por ejemplo:
+  `php_value upload_max_filesize 256M`
+  ¡Pero recuerda no subir los cambios a producción si no los quieres allí!)
 
 Si tienes algún problema con los servidores, puedes ejecutar `docker-compose up` sin la opción `-d` y verás todos los mensajes de error. También puedes modificar wp-config.php y poner `define('WP_DEBUG', true);` 
 
+### Conexion a cualquiera de los servidores
+
+Puedes abrir una línea de comandos en cualquiera de los contenedores que se necesitan para ejecutar la aplicación con el siguiente comando:
+`docker exec -ti SERVIDOR /bin/sh`
+
+Por ejemplo, para conectarse al servidor php: `docker exec -ti sina_php /bin/sh`. Todos los servidores excepto php admiten también bash.
+
+Los nombres de los cuatro servidores son:
+- sina_mysql
+- sina_apache
+- sina_php
+- sina_phpmyadmin
+
+
+Ver los modulos instalados en apache: httpd -M
+
 ### Conexión a mysql
+
 Puedes conectar a mysql desde línea de comandos ejecutando:
-`docker run -it --network sina_backend --rm mysql mysql -hsina_mysql -uroot -prootpassword`
-Desde ahí podrás ejecutar consultas directamente a la base de datos. Ten en cuenta que tambióen 
+`docker run -it --network docker-sina_sina --rm mysql mysql -hsina_mysql -uroot -prootpassword`
+Desde ahí podrás ejecutar consultas directamente a la base de datos. 
+
+Recuerda que también tienes disponible un phpmyadmin en http://localhost:9090
 
 ### Conexión a Wordpress
 Si no encuentras la dirección http://www.asociacionsina.org/wp-admin seguramente sea porque está activado el plugin better-wp-security.
@@ -65,6 +90,8 @@ Hay dos versiones de Wordpress: la de la base de datos y la de los ficheros. En 
 Deshabilitar todos los plugins:
 Browse the table wp_options and find the option active_plugins. Delete the entry
 
+### Docker
 
+Rehacer imágenes: `docker-compose build`
 
 
