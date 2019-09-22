@@ -10,3 +10,10 @@ COPY increase_upload_size.ini /usr/local/etc/php/conf.d/increase_upload_size.ini
 
 # Configuración adicional
 COPY *.ini /usr/local/etc/php/conf.d/
+
+# Gestión de usuarios
+COPY ./entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["php-fpm"]

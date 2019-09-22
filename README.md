@@ -14,13 +14,14 @@ Para poder montar una copia del blog de Sina debes seguir los siguientes pasos:
   - Haz un volcado de la base de datos
 2. Copia los ficheros del blog
   - Copia los ficheros de Wordpress del servidor en el directorio wordpress
-3. Lanza los contenedores docker necesarios 
+3. Si estás trabajando en linux, modifica el contenido de docker-compose.yml y pon en PHP_UID y PHP_GID el id de tu usuario y grupo, para que puedas editar los ficheros de wordpress desde tu ordenador.
+4. Lanza los contenedores docker necesarios 
   - Desde el directorio actual ejecuta el comando `docker-compose up -d` en este directorio. La primera vez tardará unos minutos ya que debe descargar y construir los contenedores necesarios, las siguientes veces será bastante más rápido
-4. Accede a phpmyadmin en la dirección http://localhost:9090 y realiza lo siguiente:
+5. Accede a phpmyadmin en la dirección http://localhost:9090 y realiza lo siguiente:
   - Crea el usuario y la base de datos para el blog. Los datos los tienes en wp-config.php
   - Carga la copia de la base de datos mediante la utilidad de importación de phpmyadmin
-5. Modifica tu fichero de hosts (/etc/hosts si estás en linux) para incluir www.asociacionsina.org con la dirección 127.0.0.1. De este modo no tendrás que tocar nada en Wordpress. Recuerda eliminarlo cuando quieras acceder al blog real.
-6. Accede al blog en la dirección http://www.asociacionsina.org
+6. Modifica tu fichero de hosts (/etc/hosts si estás en linux) para incluir www.asociacionsina.org con la dirección 127.0.0.1. De este modo no tendrás que tocar nada en Wordpress. Recuerda eliminarlo cuando quieras acceder al blog real.
+7. Accede al blog en la dirección http://www.asociacionsina.org
 
 ## Parada
 
@@ -93,5 +94,8 @@ Browse the table wp_options and find the option active_plugins. Delete the entry
 ### Docker
 
 Rehacer imágenes: `docker-compose build`
+FALTA MIRAR EL TEMA DE USUARIO PHP
+/usr/local/etc/php-fpm.d/www.conf
+
 
 

@@ -5,6 +5,9 @@ services:
     container_name: sina_php
     networks:
       - sina
+    environment:
+      - PHP_UID=1000 # Cambia esto por tu usuario
+      - PHP_GID=1000 # Cambia esto por tu grupo
     volumes:
       - ./wordpress/:/var/www/html/
 
