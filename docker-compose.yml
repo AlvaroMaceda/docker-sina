@@ -4,9 +4,10 @@ services:
     build: './php/'
     container_name: sina_php
     networks:
-      - backend
+      - sina
     volumes:
-      - ./public_html/:/var/www/html/
+      - ./wordpress/:/var/www/html/
+
   apache:
     build: './apache/'
     container_name: sina_apache
@@ -14,28 +15,29 @@ services:
       - php
       - mysql
     networks:
-      - frontend
-      - backend
+      - sina
     ports:
       - "80:80" # Debe ser 80 para poder añadir una entrada en localhost que apunte a www.asociacionsina.org
     volumes:
-      - ./public_html/:/var/www/html/
+      - ./wordpress/:/var/www/html/
+
   mysql:
     build: './mysql/'
     container_name: sina_mysql
     networks:
-      backend:
+      sina:
         aliases:
          - db5000048318.hosting-data.io # Cambiar esto por el host que haya para mysql en wp-config.php
     environment:
       - MYSQL_ROOT_PASSWORD=rootpassword
     volumes:
       - ./db:/var/lib/mysql
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: sina_phpmyadmin
     networks:
-      - backend    
+      - sina    
     depends_on:
       - mysql
     environment:
@@ -47,7 +49,7 @@ services:
     ports:
      - 9090:80
     volumes:
-     - /sessions      
+     - /sessions
+     
 networks:
-  frontend:
-  backend:
+  sina:
