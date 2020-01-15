@@ -1,0 +1,4 @@
+# Guardar el fichero en git pero mantener vacío
+*
+!.gitignore
+
